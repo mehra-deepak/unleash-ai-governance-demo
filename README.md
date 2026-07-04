@@ -39,7 +39,7 @@ This demo places GPT-5 behind the `gpt_5_assistant` Unleash flag. The applicatio
 ## High-Level Design
 
 <p align="center">
-  <img src="assets/unleash-ai-governance-hld.png" alt="High-level architecture for AI model governance with Unleash" width="100%">
+  <img src="assets/unleash-ai-governance-hld-v2.png" alt="High-level architecture for AI model governance with Unleash" width="100%">
 </p>
 
 The architecture has two distinct paths:
@@ -196,7 +196,7 @@ unleash-ai-governance-demo/
 |-- docker-compose.yml     # Local Unleash and PostgreSQL
 |-- requirements.txt
 |-- assets/
-|   |-- unleash-ai-governance-hld.png
+|   |-- unleash-ai-governance-hld-v2.png
 |   `-- unleash-ai-governance-hld.svg
 |-- templates/
 |   `-- index.html
