@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Unleash AI Governance Demo</title>
+    <style>
+      :root {
+        --bg: #f6f7f9;
+        --panel: #ffffff;
+        --text: #17202f;
+        --muted: #667085;
+        --line: #dde3ea;
+        --ok: #117864;
+        --warn: #9a5b00;
+        --danger: #b42318;
+        --ink: #263447;
+        --shadow: 0 18px 45px rgba(23, 32, 47, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 34px 0;
+      }
+
+      header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 4vw, 3.3rem);
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      header p {
+        max-width: 780px;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 1.05rem;
+      }
+
+      .system-status {
+        flex: 0 0 auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px 14px;
+        background: var(--panel);
+      }
+
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 4px;
+        font-weight: 800;
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--ok);
+      }
+
+      .system-status.degraded .status-dot { background: #d99b17; }
+      .system-status.incident .status-dot { background: var(--danger); }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        padding: 22px;
+      }
+
+      .panel h2 {
+        margin-bottom: 16px;
+        color: var(--ink);
+        font-size: 1.1rem;
+      }
+
+      .scenario {
+        display: grid;
+        gap: 14px;
+      }
+
+      .checkout {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+        background: #fbfcfd;
+      }
+
+      .checkout h3 {
+        font-size: 1.35rem;
+      }
+
+      .checkout p,
+      .hint,
+      .metric span,
+      .status {
+        color: var(--muted);
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: end;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 0 12px;
+        color: var(--text);
+        font-size: 1rem;
+      }
+
+      select {
+        width: 100%;
+        height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 0 12px;
+        background: #ffffff;
+        color: var(--text);
+        font-size: 1rem;
+      }
+
+      .identity-fields {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(150px, 0.55fr);
+        gap: 10px;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--ok);
+      }
+
+      button {
+        min-height: 42px;
+        border: 0;
+        border-radius: 6px;
+        padding: 0 14px;
+        background: var(--ink);
+        color: #ffffff;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      button:hover {
+        filter: brightness(0.94);
+      }
+
+      .primary {
+        background: var(--ok);
+      }
+
+      .danger {
+        background: var(--danger);
+        width: 100%;
+        margin-top: 12px;
+      }
+
+      .controls {
+        display: grid;
+        gap: 18px;
+      }
+
+      .switch-row,
+      .slider-head,
+      .metrics {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .switch {
+        position: relative;
+        width: 56px;
+        height: 32px;
+        flex: 0 0 auto;
+      }
+
+      .switch input {
+        opacity: 0;
+      }
+
+      .track {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        background: #a9b4c2;
+        cursor: pointer;
+      }
+
+      .track::after {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #ffffff;
+        transition: transform 160ms ease;
+      }
+
+      .switch input:checked + .track {
+        background: var(--ok);
+      }
+
+      .switch input:checked + .track::after {
+        transform: translateX(24px);
+      }
+
+      .meter {
+        height: 12px;
+        margin-top: 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #e8edf2;
+      }
+
+      .meter-fill {
+        width: 50%;
+        height: 100%;
+        background: var(--ok);
+      }
+
+      .metrics {
+        margin-top: 14px;
+      }
+
+      .metric {
+        flex: 1;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 1.45rem;
+      }
+
+      .results {
+        grid-column: 1 / -1;
+      }
+
+      .timeline {
+        grid-column: 1 / -1;
+      }
+
+      .timeline-track {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .timeline-step {
+        min-height: 84px;
+        border: 1px solid var(--line);
+        border-top: 4px solid #b8c1cc;
+        border-radius: 6px;
+        padding: 11px;
+        background: #fbfcfd;
+      }
+
+      .timeline-step span {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .timeline-step.complete { border-top-color: var(--ok); }
+      .timeline-step.active { border-color: #d99b17; border-top-color: #d99b17; }
+      .timeline-step.incident { border-color: var(--danger); border-top-color: var(--danger); }
+
+      .incident-message {
+        display: none;
+        margin-top: 12px;
+        border-left: 4px solid var(--danger);
+        padding: 10px 12px;
+        background: #fff3f2;
+        color: var(--danger);
+        font-weight: 800;
+      }
+
+      .incident-message.visible { display: block; }
+      .incident-message.mitigated {
+        border-left-color: var(--ok);
+        background: #edf9f5;
+        color: var(--ok);
+      }
+
+      .log-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.92rem;
+      }
+
+      .log-table th,
+      .log-table td {
+        border-bottom: 1px solid var(--line);
+        padding: 10px 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .log-table th {
+        color: var(--muted);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 82px;
+        border-radius: 999px;
+        padding: 5px 9px;
+        color: #ffffff;
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+
+      .on {
+        background: var(--ok);
+      }
+
+      .off {
+        background: var(--danger);
+      }
+
+      .neutral {
+        background: var(--warn);
+      }
+
+      @media (max-width: 860px) {
+        header { display: block; }
+        .system-status { margin-top: 16px; }
+
+        .grid,
+        .row {
+          grid-template-columns: 1fr;
+        }
+
+        button {
+          width: 100%;
+        }
+
+        .metrics {
+          flex-direction: column;
+        }
+
+        .metric {
+          width: 100%;
+        }
+
+        .timeline-track { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>Unleash AI Governance Demo</h1>
+          <p>
+            Introduce a GPT-5 assistant by audience, monitor quality and cost,
+            then route every user back to GPT-4 when production risk appears.
+          </p>
+        </div>
+        <div id="system-status" class="system-status">
+          <span class="hint">System Status</span>
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span id="system-status-label">Healthy</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="grid">
+        <section class="panel timeline">
+          <h2>Release Timeline</h2>
+          <div class="timeline-track">
+            <div class="timeline-step active" data-step="1"><span>Step 1</span><strong>GPT-4 only</strong></div>
+            <div class="timeline-step" data-step="2"><span>Step 2</span><strong>Internal canary</strong></div>
+            <div class="timeline-step" data-step="3"><span>Step 3</span><strong>Beta expansion</strong></div>
+            <div class="timeline-step" data-step="4"><span>Step 4</span><strong>AI incident detected</strong></div>
+            <div class="timeline-step" data-step="5"><span>Step 5</span><strong>Fallback to GPT-4</strong></div>
+          </div>
+          <p id="incident-message" class="incident-message"></p>
+        </section>
+
+        <article class="panel scenario">
+          <h2>AI Model Release Simulation</h2>
+          <div class="checkout">
+            <h3 id="checkout-title">🟢 GPT-4 Assistant (Stable)</h3>
+            <p id="checkout-copy">
+              Governed fallback model. Users remain here until Unleash targets
+              them for the experimental assistant.
+            </p>
+          </div>
+
+          <div class="row">
+            <div>
+              <div class="identity-fields">
+                <div>
+                  <label for="user-id">User ID</label>
+                  <input id="user-id" type="text" value="user-007" />
+                </div>
+                <div>
+                  <label for="user-type">Audience</label>
+                  <select id="user-type">
+                    <option value="internal">Internal employee</option>
+                    <option value="beta">Beta user</option>
+                    <option value="regular" selected>Regular user</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <button id="check-button" class="primary" type="button">
+              Route Request
+            </button>
+          </div>
+
+          <button id="simulate-button" type="button">Simulate 50 AI Requests</button>
+          <p class="hint">
+            Unleash evaluates <code>gpt_5_assistant</code> using identity and
+            audience, keeping model assignment consistent for each user.
+          </p>
+
+          <div class="metrics">
+            <div class="metric">
+              <strong id="enabled-count">0</strong>
+              <span>requests routed to GPT-5</span>
+            </div>
+            <div class="metric">
+              <strong id="disabled-count">0</strong>
+              <span>requests protected on GPT-4</span>
+            </div>
+          </div>
+          <div class="metrics">
+            <div class="metric"><strong id="latency-metric">—</strong><span>average latency</span></div>
+            <div class="metric"><strong id="cost-metric">—</strong><span>cost per request</span></div>
+            <div class="metric"><strong id="hallucination-metric">—</strong><span>hallucination rate</span></div>
+          </div>
+        </article>
+
+        <aside class="panel controls">
+          <h2>Admin Controls</h2>
+
+          <div class="switch-row">
+            <div>
+              <label for="enabled-toggle">GPT-5 assistant flag</label>
+              <p class="status" id="enabled-label">Enabled</p>
+            </div>
+            <label class="switch">
+              <input id="enabled-toggle" type="checkbox" checked />
+              <span class="track"></span>
+            </label>
+          </div>
+
+          <div>
+            <div class="slider-head">
+              <label for="rollout-slider">GPT-5 rollout</label>
+              <strong><span id="rollout-value">50</span>%</strong>
+            </div>
+            <input
+              id="rollout-slider"
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+            />
+            <div class="meter">
+              <div id="rollout-meter" class="meter-fill"></div>
+            </div>
+            <p class="hint">Gradual rollout reduces risk</p>
+          </div>
+
+          <button id="update-button" class="primary" type="button">
+            Update Model Rollout
+          </button>
+          <button id="kill-switch-button" class="danger" type="button">
+            🔥 Emergency Kill Switch
+          </button>
+          <p class="hint">Kill switch instantly routes every audience back to GPT-4</p>
+
+          <p class="status" id="admin-status">
+            Connected to {{ config.unleash_url }}
+          </p>
+        </aside>
+
+        <section class="panel results">
+          <h2>Live AI Request Results</h2>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>User ID</th>
+                <th>Audience</th>
+                <th>Model</th>
+                <th>Latency</th>
+                <th>Cost</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody id="log-body">
+              <tr>
+                <td colspan="7">No traffic yet. Route a request or run a simulation.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+    </main>
+
+    <script src="/static/script.js"></script>
+  </body>
+</html>
