@@ -86,7 +86,7 @@
   <!-- Control plane nodes -->
   <g filter="url(#shadow)">
     <rect x="100" y="630" width="220" height="115" rx="10" fill="#FFFFFF" stroke="#B8C1CC"/>
-    <rect x="405" y="630" width="220" height="115" rx="10" fill="#FFF0EF" stroke="#D86A64"/>
+    <rect x="405" y="700" width="220" height="105" rx="10" fill="#FFF0EF" stroke="#D86A64"/>
     <rect x="715" y="615" width="250" height="145" rx="10" fill="#EAF7F3" stroke="#55A996"/>
     <rect x="1060" y="630" width="215" height="115" rx="10" fill="#FFFFFF" stroke="#B8C1CC"/>
   </g>
@@ -95,9 +95,9 @@
   <text x="210" y="702" class="nodeText" text-anchor="middle">Enable + rollout</text>
   <text x="210" y="727" class="nodeText" text-anchor="middle">Audience targeting</text>
 
-  <text x="515" y="672" class="nodeTitle" text-anchor="middle">Emergency kill switch</text>
-  <text x="515" y="703" class="nodeText" text-anchor="middle">Immediate local block</text>
-  <text x="515" y="728" class="nodeText" text-anchor="middle">Global flag disable</text>
+  <text x="515" y="738" class="nodeTitle" text-anchor="middle">Emergency kill switch</text>
+  <text x="515" y="768" class="nodeText" text-anchor="middle">Immediate local block</text>
+  <text x="515" y="792" class="nodeText" text-anchor="middle">Global flag disable</text>
 
   <text x="840" y="658" class="nodeTitle" text-anchor="middle">Unleash server</text>
   <text x="840" y="690" class="nodeText" text-anchor="middle">Admin API + feature policy</text>
@@ -110,15 +110,15 @@
   <text x="1167" y="728" class="nodeText" text-anchor="middle">Local Docker volume</text>
 
   <!-- Control arrows -->
-  <path d="M320 687 C350 687 350 598 650 598 C690 598 690 687 703 687" fill="none" stroke="#475467" stroke-width="3" marker-end="url(#arrow)"/>
-  <text x="505" y="588" class="label" text-anchor="middle">Admin API updates</text>
-  <line x1="625" y1="715" x2="703" y2="715" stroke="#C4322B" stroke-width="3" marker-end="url(#arrowRed)"/>
+  <line x1="320" y1="675" x2="703" y2="675" stroke="#475467" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="505" y="663" class="label" text-anchor="middle">Admin API updates</text>
+  <line x1="625" y1="752" x2="703" y2="715" stroke="#C4322B" stroke-width="3" marker-end="url(#arrowRed)"/>
   <line x1="965" y1="687" x2="1048" y2="687" stroke="#475467" stroke-width="3" marker-end="url(#arrow)"/>
 
   <!-- Cross-plane relationships -->
   <path d="M840 615 C840 540 790 500 790 412" fill="none" stroke="#087E6A" stroke-width="3" stroke-dasharray="9 7" marker-end="url(#arrowGreen)"/>
   <text x="858" y="522" class="label">SDK refreshes flag configuration</text>
-  <path d="M515 630 C515 545 475 500 475 412" fill="none" stroke="#C4322B" stroke-width="3" stroke-dasharray="9 7" marker-end="url(#arrowRed)"/>
+  <path d="M515 700 C515 560 475 510 475 412" fill="none" stroke="#C4322B" stroke-width="3" stroke-dasharray="9 7" marker-end="url(#arrowRed)"/>
   <text x="330" y="523" class="label">Immediate mitigation</text>
 
   <!-- Footer legend -->
