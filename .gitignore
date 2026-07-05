@@ -21,6 +21,3 @@ recordings/
 *.mp4
 *.mov
 *.mkv
-
-# Curated recording linked from the README
-!assets/unleash-ai-governance-demo.mp4
