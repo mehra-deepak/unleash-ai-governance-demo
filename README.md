@@ -15,6 +15,12 @@ A production-incident simulation showing how feature management can govern an ex
 
 ---
 
+## Demo Video
+
+[Watch the complete AI governance incident demo](assets/unleash-ai-governance-demo.mp4)
+
+See the controlled GPT-5 rollout, simulated production degradation, and emergency fallback to GPT-4 in action.
+
 ## The Problem
 
 An enterprise assistant already runs reliably on **GPT-4**. The team wants to introduce **GPT-5**, but a global release creates three immediate risks:
