@@ -251,4 +251,3 @@ userInput.addEventListener("keydown", (event) => {
 
 loadConfig();
 refreshLogs();
-checkUser();
